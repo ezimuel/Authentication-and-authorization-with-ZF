@@ -1,0 +1,22 @@
+<?php
+/**
+ * Login page view
+ *  
+ * @author Enrico Zimuel (enrico@zimuel.it)
+ */
+
+?>
+<h2>Login:</h2>
+<?php 
+if (!empty($this->message)) {
+	echo '<font color="red">';
+	echo $this->escape($this->message[0]);
+	echo '</font>';
+}
+
+$this->form->setName('login')
+           ->setAction('/login/index/login')
+           ->setMethod('post'); 
+echo $this->form; 
+
+

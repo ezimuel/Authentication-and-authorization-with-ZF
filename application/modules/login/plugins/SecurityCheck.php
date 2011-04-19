@@ -34,12 +34,12 @@ class Login_Plugin_SecurityCheck extends Zend_Controller_Plugin_Abstract
         	$db= $bootstrap->getResource('db');
 
 		$manager = $bootstrap->getResource('cachemanager');
-		//$cache = $manager->getCache('acl');
+		$cache = $manager->getCache('acl');
 				
-		//if (($acl= $cache->load('ACL_'.$this->_role))===false) {
+		if (($acl= $cache->load('ACL_'.$this->_role))===false) {
                     $acl= new Login_Acl($db,$this->_role);
-                //    $cache->save($acl,'ACL_'.$this->_role);
-		//}
+                    $cache->save($acl,'ACL_'.$this->_role);
+		}
 				
         	if ($this->_isAllowed($auth,$acl)) {
                     $redirect=false;

@@ -21,4 +21,5 @@ class Login_Model_Resources extends Zend_Db_Table_Abstract
         $stmt= $this->getAdapter()->query($select);
     	return $stmt->fetchAll();
     }
+    
 }

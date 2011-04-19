@@ -27,32 +27,32 @@ class Login_Plugin_SecurityCheck extends Zend_Controller_Plugin_Abstract
 		
         $redirect=true;
         if ($this->_module != self::MODULE_NO_AUTH) {
-        	if ($this->_isAuth($auth)) {
-        		$user= $auth->getStorage()->read();
-        		$this->_role= $user['id_role'];
-        		$bootstrap = Zend_Controller_Front::getInstance()->getParam('bootstrap');
-        		$db= $bootstrap->getResource('db');
+            if ($this->_isAuth($auth)) {
+                $user= $auth->getStorage()->read();
+        	$this->_role= $user['id_role'];
+        	$bootstrap = Zend_Controller_Front::getInstance()->getParam('bootstrap');
+        	$db= $bootstrap->getResource('db');
 
-				$manager = $bootstrap->getResource('cachemanager');
-				$cache = $manager->getCache('acl');
+		$manager = $bootstrap->getResource('cachemanager');
+		//$cache = $manager->getCache('acl');
 				
-				if (($acl= $cache->load('ACL_'.$this->_role))===false) {
-					$acl= new Login_Acl($db,$this->_role);
-					$cache->save($acl,'ACL_'.$this->_role);
-				}
+		//if (($acl= $cache->load('ACL_'.$this->_role))===false) {
+                    $acl= new Login_Acl($db,$this->_role);
+                //    $cache->save($acl,'ACL_'.$this->_role);
+		//}
 				
-        		if ($this->_isAllowed($auth,$acl)) {
-        			$redirect=false;
-        		}
-        	} 
+        	if ($this->_isAllowed($auth,$acl)) {
+                    $redirect=false;
+        	}
+            }
         } else {
-        	$redirect=false;
+            $redirect=false;
         }
         
         if ($redirect) {
-        	$request->setModuleName('login');
-			$request->setControllerName('index');
-        	$request->setActionName('index');
+            $request->setModuleName('login');
+            $request->setControllerName('index');
+            $request->setActionName('index');
         }
     }
     /**

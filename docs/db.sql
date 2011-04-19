@@ -3,8 +3,6 @@
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
-
-
 CREATE TABLE `permissions` (
   `id` int(11) NOT NULL auto_increment,
   `id_role` int(11) NOT NULL,
@@ -14,12 +12,10 @@ CREATE TABLE `permissions` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 
-
-INSERT INTO `permissions` (`id`, `id_role`, `id_resource`, `permission`) VALUES 
+INSERT INTO `permissions` (`id`, `id_role`, `id_resource`, `permission`) VALUES
 (1, 3, 1, 'allow'),
-(2, 2, 2, 'allow'),
+(2, 1, 2, 'allow'),
 (3, 2, 3, 'deny');
-
 
 
 CREATE TABLE `resources` (
@@ -29,12 +25,10 @@ CREATE TABLE `resources` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 
-
-INSERT INTO `resources` (`id`, `resource`) VALUES 
+INSERT INTO `resources` (`id`, `resource`) VALUES
 (1, '*/*/*'),
 (3, 'home/index/menu'),
 (2, 'home/*/*');
-
 
 
 CREATE TABLE `roles` (
@@ -45,12 +39,10 @@ CREATE TABLE `roles` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 
-
-INSERT INTO `roles` (`id`, `role`, `id_parent`) VALUES 
-(3, 'admin', 2),
+INSERT INTO `roles` (`id`, `role`, `id_parent`) VALUES
+(3, 'admin', 0),
 (2, 'user', 1),
 (1, 'guest', 0);
-
 
 
 CREATE TABLE `users` (
@@ -63,7 +55,6 @@ CREATE TABLE `users` (
 
 
 
-INSERT INTO `users` (`username`, `password`, `id_role`, `ldap`) VALUES 
+INSERT INTO `users` (`username`, `password`, `id_role`, `ldap`) VALUES
 ('admin', '13956c93ab56025e9397ab69957418989ebab847', 3, 0),
 ('enrico', 'ed64662ef2d8425bc7654e5d7a09fee0788b72ec', 2, 0);
-

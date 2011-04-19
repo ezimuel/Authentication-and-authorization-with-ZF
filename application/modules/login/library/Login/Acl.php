@@ -8,8 +8,14 @@ class Login_Acl extends Zend_Acl {
 	
     public function __construct($db,$role) {
         $this->loadRoles($db);
-        $this->loadResources($db,$role);
-        $this->loadPermissions($db,$role);
+
+        $roles = new Login_Model_Roles($db);
+        $inhRole= $role;
+        while (!empty($inhRole)) {
+            $this->loadResources($db,$inhRole);
+            $this->loadPermissions($db,$inhRole);
+            $inhRole= $roles->getParentRole($inhRole);
+        }
     }
 
     public function loadRoles($db) {

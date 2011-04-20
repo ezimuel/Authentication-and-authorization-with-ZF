@@ -5,10 +5,14 @@
  * @author Enrico Zimuel (enrico@zimuel.it)
  */
 class Login_Acl extends Zend_Acl {
-	
+    /**
+     * __construct
+     *
+     * @param Zend_Db_Adapter $db
+     * @param integer $role
+     */
     public function __construct($db,$role) {
         $this->loadRoles($db);
-
         $roles = new Login_Model_Roles($db);
         $inhRole= $role;
         while (!empty($inhRole)) {
@@ -17,7 +21,12 @@ class Login_Acl extends Zend_Acl {
             $inhRole= $roles->getParentRole($inhRole);
         }
     }
-
+    /**
+     * Load all the roles from the DB
+     *
+     * @param Zend_Db_Adapter $db
+     * @return boolean
+     */
     public function loadRoles($db) {
     	if (empty($db)) {
     		return false;
@@ -31,8 +40,15 @@ class Login_Acl extends Zend_Acl {
                 $this->addRole(new Zend_Acl_Role($role->id));
             }
         }
+        return true;
     }
-    
+    /**
+     * Load all the resources for the specified role
+     *
+     * @param Zend_Db_Adapter $db
+     * @param integer $role
+     * @return boolean
+     */
     public function loadResources($db,$role) {
     	if (empty($db)) {
     		return false;
@@ -40,10 +56,19 @@ class Login_Acl extends Zend_Acl {
     	$resources= new Login_Model_Resources($db);
     	$allResources= $resources->getResources($role);
     	foreach ($allResources as $res) {
-    		$this->addResource(new Zend_Acl_Resource($res['resource']));
+                if (!$this->has($res)) {
+                    $this->addResource(new Zend_Acl_Resource($res['resource']));
+                }
     	}
+        return true;
     }
-    
+    /**
+     * Load all the permission for the specified role
+     *
+     * @param Zend_Db_Adapter $db
+     * @param integer $role
+     * @return boolean
+     */
     public function loadPermissions($db,$role) {
     	if (empty($db)) {
     		return false;
@@ -57,6 +82,7 @@ class Login_Acl extends Zend_Acl {
     			$this->deny($res['id_role'],$res['resource']);
     		}	
     	}
+        return true;
     }
 
 }
